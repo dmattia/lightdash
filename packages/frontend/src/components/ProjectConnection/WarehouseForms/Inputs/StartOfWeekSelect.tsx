@@ -1,7 +1,8 @@
+import { Select } from '@mantine/core';
 import React, { FC } from 'react';
-import Select2 from '../../../ReactHookForm/Select2';
+import { Controller } from 'react-hook-form';
 
-const defaultOption = { value: null, label: 'Auto' };
+const defaultOption = { value: ' ', label: 'Auto' };
 const daysOfWeekOptions = [
     'Monday',
     'Tuesday',
@@ -10,17 +11,24 @@ const daysOfWeekOptions = [
     'Friday',
     'Saturday',
     'Sunday',
-].map((x, index) => ({ value: index, label: x }));
+].map((x, index) => ({ value: index.toString(), label: x }));
 
 const StartOfWeekSelect: FC<{ disabled: boolean }> = ({ disabled }) => {
     return (
-        <Select2
+        <Controller
             name="warehouse.startOfWeek"
-            label="Start of week"
-            labelHelp="Will be taken into account when using 'WEEK' time interval"
-            items={[defaultOption, ...daysOfWeekOptions]}
             defaultValue={defaultOption.value}
-            disabled={disabled}
+            render={({ field }) => (
+                <Select
+                    label="Start of week"
+                    description="Will be taken into account when using 'WEEK' time interval"
+                    data={[defaultOption, ...daysOfWeekOptions]}
+                    value={field.value}
+                    onChange={field.onChange}
+                    disabled={disabled}
+                    dropdownPosition="top"
+                />
+            )}
         />
     );
 };
